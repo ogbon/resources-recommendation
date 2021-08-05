@@ -1,0 +1,347 @@
+openapi: 3.0.0
+info:
+  version: 1.0.0
+  title: Resources Recommendation API
+  description: Documentation for the Resources Recommendation API
+
+tags:
+  - name: Auth
+    description: Auth
+  - name: Recommendations
+    description: Recommendations
+  - name: Users
+    description: Users
+
+paths:
+  /auth/sign-in:
+    post:
+      tags:
+        - Auth
+      summary: Login as a user
+      requestBody:
+        description: Login payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSignIn'
+      responses:
+        "200":
+          $ref: '#/components/responses/UserSignIn'
+
+  /auth/sign-up:
+    post:
+      tags:
+        - Auth
+      summary: Sign Up as a user
+      requestBody:
+        description: Sign up payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserSignUp'
+      responses:
+        "201":
+          $ref: '#/components/responses/UserSignUp'
+
+  /recommendations:
+    post:
+      tags:
+        - Recommendations
+      security:
+        - bearerAuth: [ ]
+      summary: Create new Recommendation
+      requestBody:
+        description: Recommendation payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationCreate'
+      responses:
+        "201":
+          $ref: '#/components/responses/RecommendationCreate'
+    get:
+      tags:
+        - Recommendations
+      summary: Fetch Recommendations
+      security:
+        - bearerAuth: [ ]
+      responses:
+        "200":
+          $ref: '#/components/responses/RecommendationFetch'
+  /recommendations/{id}:
+    get:
+      tags:
+        - Recommendations
+      summary: Get Recommendation
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: Recommendation ID
+          schema:
+            $ref: '#/components/schemas/Number'
+      responses:
+        "200":
+          $ref: '#/components/responses/RecommendationDetail'
+    patch:
+      tags:
+        - Recommendations
+      summary: Update Recommendation
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: Recommendation ID
+          schema:
+            $ref: '#/components/schemas/Number'
+      requestBody:
+        description: Recommendation payload
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecommendationCreate'
+      responses:
+        "200":
+          $ref: '#/components/responses/RecommendationDetail'
+    delete:
+      tags:
+        - Recommendations
+      summary: Delete Recommendation
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: id
+          in: path
+          description: Recommendation ID
+          schema:
+            $ref: '#/components/schemas/Number'
+      responses:
+        "202":
+          $ref: '#/components/responses/DeleteResource'
+
+  /users/recommendations:
+    get:
+      tags:
+        - Users
+      summary: Fetch Users Recommendations
+      security:
+        - bearerAuth: [ ]
+      parameters:
+        - name: page[size]
+          in: query
+          description: 'Page size'
+        - name: page[number]
+          in: query
+          description: 'Current page number'
+      responses:
+        "200":
+          $ref: '#/components/responses/UsersRecommendationsFetch'
+          
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  responses:
+    DeleteResource:
+      description: Delete resource
+      content:
+        "application/json":
+          schema:
+            $ref: '#/components/schemas/DeleteResource'
+    UserSignIn:
+      description: Login response
+      content:
+        "application/json":
+          schema:
+            $ref: '#/components/schemas/UserSignInResponse'
+    UserSignUp:
+      description: Sign Up response
+      content:
+        "application/json":
+          schema:
+            $ref: '#/components/schemas/UserSignUpResponse'
+    RecommendationCreate:
+      description: Create Recommendation response
+      content:
+        "application/json":
+          schema:
+            $ref: '#/components/schemas/RecommendationCreateResponse'
+    RecommendationFetch:
+      description: Fetch Recommendations response
+      content:
+        "application/json":
+          schema:
+            $ref: '#/components/schemas/RecommendationFetchResponse'
+    RecommendationDetail:
+      description: Get Recommendation
+      content:
+        "application/json":
+          schema:
+            $ref: '#/components/schemas/RecommendationDetailResponse'
+    UsersContactsFetch:
+      description: Fetch Users response
+      content:
+        "application/json":
+          schema:
+            $ref: '#/components/schemas/UsersContactsFetchResponse'        
+
+  schemas:
+    Number:
+      type: number
+      example: 1
+    String:
+      type: string
+    DateTime:
+      type: string
+      format: 'date-time'
+    Email:
+      type: string
+      format: email
+      example: user@example.com
+    Boolean:
+      type: boolean
+    TypeEnum:
+      type: string
+      enum: [ 'book', 'video', 'audio', 'website', 'others' ]
+    RatingEnum:
+      type: string
+      enum: [ '5', '4', '3', '2', '1' ]   
+    DefaultModelAttributes:
+      properties:
+        id:
+          $ref: "#/components/schemas/Number"
+        createdAt:
+          $ref: "#/components/schemas/DateTime"
+        updatedAt:
+          $ref: "#/components/schemas/DateTime"
+    BaseResponseFields:
+      properties:
+        message:
+          $ref: '#/components/schemas/String'
+        success:
+          $ref: '#/components/schemas/Boolean'
+    DeleteResource:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponseFields'
+        - properties:
+            data:
+              type: string
+              example: null      
+    UserSignIn:
+      properties:
+        email:
+          $ref: '#/components/schemas/Email'
+        password:
+          type: string
+          example: password
+    UserSignUp:
+      properties:
+        email:
+          $ref: '#/components/schemas/Email'
+        password:
+          $ref: '#/components/schemas/String'
+        name:
+          $ref: '#/components/schemas/String'  
+
+    UserDetail:
+      allOf:
+        - $ref: '#/components/schemas/DefaultModelAttributes'
+        - properties:
+            name:
+              $ref: '#/components/schemas/String'
+            email:
+              $ref: '#/components/schemas/String'
+            role_id:
+              $ref: '#/components/schemas/Number'   
+          
+    UserSignInResponse:
+      properties:
+        token:
+          type: string
+          example: "30a6..."
+        user:
+          $ref: "#/components/schemas/UserDetail"  
+
+    UserSignUpResponse:
+      allOf:
+        - $ref: '#/components/schemas/BaseResponseFields'
+        - properties:
+            data:
+              $ref: '#/components/schemas/UserDetail'
+
+    RecommendationCreate:
+      properties:
+        type:
+          $ref: '#/components/schemas/TypeEnum'
+        title:
+          $ref: '#/components/schemas/String'
+        rating:
+          $ref: '#/components/schemas/RatingEnum'
+        howItHelpedYou:
+          $ref: '#/components/schemas/String'        
+              
+    RecommendationDetail:
+      allOf:
+        - $ref: '#/components/schemas/DefaultModelAttributes'
+        - properties:
+            type:
+              $ref: '#/components/schemas/TypeEnum'
+            title:
+              $ref: '#/components/schemas/String'
+            rating:
+              $ref: '#/components/schemas/RatingEnum'
+            howItHelpedYou:
+              $ref: '#/components/schemas/String'
+            user_id:
+              $ref: '#/components/schemas/Number'
+              
+    RecommendationCreateResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/RecommendationDetail'
+        message:
+          $ref: '#/components/schemas/String'
+        success:
+          $ref: "#/components/schemas/Boolean"
+          
+    RecommendationFetchResponse:
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendationDetail'
+        message:
+          $ref: '#/components/schemas/String'
+        success:
+          $ref: "#/components/schemas/Boolean"
+          
+    RecommendationDetailResponse:
+      properties:
+        data:
+          $ref: '#/components/schemas/RecommendationDetail'
+        message:
+          $ref: '#/components/schemas/String'
+        success:
+          $ref: '#/components/schemas/Boolean' 
+          
+    UsersRecommendationsFetchResponse:
+      properties:
+        count:
+          $ref: '#/components/schemas/Number'
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecommendationDetail'
+        currentPage:
+          $ref: '#/components/schemas/Number'
+        totalPage:
+          $ref: '#/components/schemas/Number'
+        message:
+          $ref: '#/components/schemas/String'
+        success:
+          $ref: '#/components/schemas/Boolean'      
+              
