@@ -12,21 +12,19 @@ const schemas = {
       password: Joi.string().required()
     })
   },
-  contact: {
+  recommendation: {
     create: Joi.object().keys({
-      firstName: Joi.string().required(),
-      lastName: Joi.string().required(),
-      meetingPlace: Joi.string().required(),
-      meetingDate: Joi.date(),
-      purpose: Joi.string().required()
+      type: Joi.string().valid('book', 'video', 'audio', 'website', 'others').required(),
+      title: Joi.string().required(),
+      rating: Joi.string().valid('5', '4', '3', '2', '1').required(),
+      howItHelpedYou: Joi.string().required()
     }),
 
     update: Joi.object().keys({
-      firstName: Joi.string(),
-      lastName: Joi.string(),
-      meetingPlace: Joi.string(),
-      meetingDate: Joi.date(),
-      purpose: Joi.string()
+      type: Joi.string().valid('book', 'video', 'audio', 'website', 'others'),
+      title: Joi.string(),
+      rating: Joi.string().valid('5', '4', '3', '2', '1'),
+      howItHelpedYou: Joi.string()
     })
   }
 }
