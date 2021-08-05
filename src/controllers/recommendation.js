@@ -62,7 +62,7 @@ const recommendations = {
       })
   },
 
-  fetchContacts: (req, res) => {
+  fetchRecommendations: (req, res) => {
     const recommendationService = new RecommendationService()
     const {page} = req.query
 
