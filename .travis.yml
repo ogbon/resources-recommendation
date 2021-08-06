@@ -18,9 +18,9 @@ before_script:
   - psql -c "CREATE USER sege WITH PASSWORD null;" -U postgres
   - npm run build
   - npm install -g sequelize-cli
-  - npm run pretest
+  - NODE_ENV=test npm run pretest
 script:
-  - npm test
+  - NODE_ENV=test npm test
 after_success:
-  - npm run test:coverage
+  - NODE_ENV=test npm run test:coverage
   
