@@ -8,12 +8,17 @@ install:
   - npm install
 services:
   - postgresql
+
+env:
+  global:
+  - NODE_ENV=test
+
 before_script:
   - psql -c 'create database resources_recommendation_test;' -U postgres
   - psql -c "CREATE USER sege WITH PASSWORD null;" -U postgres
   - npm run build
   - npm install -g sequelize-cli
-  - sequelize-cli db:migrate
+  - npm run pretest
 script:
   - npm test
 after_success:
