@@ -23,4 +23,6 @@ script:
   - NODE_ENV=test npm test
 after_success:
   - NODE_ENV=test npm run test:coverage
+addons:
+  postgresql: "12"  
   
