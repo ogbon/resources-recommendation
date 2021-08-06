@@ -43,5 +43,8 @@
     "supertest": "^6.1.4",
     "swagger-ui-express": "^4.1.6",
     "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12"
   }
 }
