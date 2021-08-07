@@ -4,7 +4,7 @@
   "description": "",
   "main": "build/index.js",
   "scripts": {
-    "migrate": "npx sequelize db:migrate && npx sequelize db:seed:all",
+    "migrate": "npx sequelize db:migrate",
     "start": "node build/index.js",
     "build": "babel ./src -d build/",
     "dev": "NODE_ENV=development nodemon --exec babel-node src/index.js",
