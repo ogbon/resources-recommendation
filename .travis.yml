@@ -14,7 +14,6 @@ before_script:
   - psql -c "CREATE USER judi WITH PASSWORD null;" -U postgres
   - npm run build
   - npm install -g sequelize-cli
-  - NODE_ENV=test npm run pretest
 script:
   - NODE_ENV=test npm test
 after_success:
