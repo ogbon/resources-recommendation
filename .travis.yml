@@ -17,14 +17,4 @@ script:
   - NODE_ENV=test npm test
 after_success:
   - NODE_ENV=test npm run test:coverage
-
-addons:
-  postgresql: '10'
-  apt:
-    packages:
-    - postgresql-10
-
-before_install:
-- sudo cp /etc/postgresql/{9.6,10}/main/pg_hba.conf
-- sudo /etc/init.d/postgresql restart    
   
