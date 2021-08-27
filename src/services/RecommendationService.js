@@ -14,7 +14,7 @@ class RecommendationService extends DataService {
   }
 
   get(id) {
-    return this.show({id,user_id: this.currentUser.id}).then(recommendation => {
+    return this.show({id, user_id: this.currentUser.id}).then(recommendation => {
       if (recommendation)
         return recommendation
       else
@@ -23,7 +23,7 @@ class RecommendationService extends DataService {
   }
 
   update(id, payload) {
-    return this.show({id,user_id: this.currentUser.id}).then(recommendation => {
+    return this.show({id, user_id: this.currentUser.id}).then(recommendation => {
       if (recommendation)
         return recommendation.update(payload)
       else
@@ -42,12 +42,12 @@ class RecommendationService extends DataService {
 
   find() { return this.index({where: {user_id: this.currentUser.id}}) }
 
-  fetchRecommendations({limit, offset}) { 
+  fetchRecommendations({limit, offset}) {
     return this.paginatedIndex({
       limit,
       offset,
       order: [['createdAt', 'DESC']]
-    }) 
+    })
   }
 }
 

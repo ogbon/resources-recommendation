@@ -20,7 +20,7 @@ fs.readdirSync(`${__dirname}/routes/`)
 
 // Setup catch-all API catch-all route
 app.get('*', (req, res) => res.status(200).send({
-    message: 'Welcome to Resources-Recommendation App'
+  message: 'Welcome to Resources-Recommendation App'
 }))
 
 export default app
