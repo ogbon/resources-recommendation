@@ -20,7 +20,7 @@ const authController = {
       .catch((err) => res.status(UNPROCESSABLE_ENTITY).send({
         data: null,
         // message: 'Unable to process your request',
-        message: err.message,
+        message: err,
         success: false
       }))
   }
