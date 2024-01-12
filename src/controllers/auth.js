@@ -19,7 +19,8 @@ const authController = {
       .then(data => res.status(CREATED).send({data, message: 'Sign Up successful', success: true}))
       .catch((err) => res.status(UNPROCESSABLE_ENTITY).send({
         data: null,
-        message: 'Unable to process your request',
+        // message: 'Unable to process your request',
+        message: err.message,
         success: false
       }))
   }
